@@ -7,6 +7,7 @@ import { Trash2, ArrowLeft } from "lucide-react";
 
 export default function CheckoutPage() {
   const { cart, removeFromCart, totalPrice } = useCart();
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   if (cart.length === 0) {
     return (
@@ -74,11 +75,11 @@ export default function CheckoutPage() {
           Total
         </span>
         <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-          ${totalPrice.toLocaleString()}
+          ${total.toLocaleString()}
         </span>
       </div>
       <Link
-        href="/"
+        href="/shop"
         className="mt-6 inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
       >
         <ArrowLeft className="h-4 w-4" />

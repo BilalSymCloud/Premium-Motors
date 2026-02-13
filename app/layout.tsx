@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
+import { CartProvider } from "@/app/context/CartContext";
 
 
 export const metadata: Metadata = {
@@ -43,7 +44,11 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
-        <main>{children}</main>
+        <main>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </main>
       </body>
     </html>
   );

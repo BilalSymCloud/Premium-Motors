@@ -31,3 +31,5 @@ yarn-error.log*
 
 # TypeScript
 next-env.d.ts
+
+interview-guide.md

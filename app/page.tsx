@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { CartProvider, useCart } from "@/app/context/CartContext";
+import { useCart } from "@/app/context/CartContext";
 import { SearchBar } from "@/app/components/SearchBar";
 import { CarCard } from "@/app/components/CarCard";
 import { CARS } from "@/app/data/cars";
@@ -13,12 +13,14 @@ function HomeContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Missing functionality: filtering logic not implemented — candidate should implement.
-  // When search is used, this currently returns no results.
   const filteredCars = useMemo(() => {
-    if (!searchQuery.trim()) return CARS;
-    // TODO: Implement search/filter logic (e.g. by name, brand)
-    return [];
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return CARS;
+    return CARS.filter(
+      (car) =>
+        car.name.toLowerCase().includes(q) ||
+        car.brand.toLowerCase().includes(q)
+    );
   }, [searchQuery]);
 
   return (
@@ -49,10 +51,9 @@ function HomeContent() {
         </p>
       ) : (
         <>
-          {/* Desktop: 4-column grid. Mobile: no responsive breakpoints — grid stays 4 cols and overflows/overlaps. */}
-          <div className="grid w-full min-w-[1200px] grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {filteredCars.map((car) => (
-              <div key={car.id} className="min-w-[260px]">
+              <div key={car.id}>
                 <CarCard car={car} onAddToCart={addToCart} />
               </div>
             ))}
@@ -64,9 +65,5 @@ function HomeContent() {
 }
 
 export default function HomePage() {
-  return (
-    <CartProvider>
-      <HomeContent />
-    </CartProvider>
-  );
+  return <HomeContent />;
 }
